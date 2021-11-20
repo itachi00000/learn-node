@@ -4,23 +4,63 @@ const PORT = 3000;
 
 const server = http.createServer();
 
+const friends = [
+{
+	id:1,name: 'Tesla', 
+
+},{
+	id:2, name: "Newton"
+},{
+	id:3, name: "Einstein"
+}
+]
+
 server.on('request', (req,res)=> {
 
-	const item = req.url.split('/');
+res.statusCode = 200;
+res.setHeader('Content-Type', 'application/json')
+
+	const items = req.url.split('/');
 	// /friends/2 => ['', 'friends', '2']
 
-	if(req.url === '/friends'){
+	if(items[1] === 'friends'){
 
-	// res.writeHead(200, {
-	// 	'Content-Type': 'application/json'
-	// })
+// length is 3 or in params
 
-	res.statusCode = 200;
-	res.setHeader('Content-Type', 'application/json')
+// if length is 3, and not empty string
+if(items.length === 3  && items[2] !== '') {
+	const friendIndex = Number(items[2]);
 
-	res.end(JSON.stringify({id:1, name: 'Newton'}))
+// friends is array list
+	
 
-	} else if(req.url === '/messages') {
+	// use '||' to check if empty
+	res.end(JSON.stringify(friends[friendIndex-1] || 'no info'));
+
+} 
+
+
+// else
+
+res.end(JSON.stringify(friends));
+
+// if greater than 3, do 404
+
+if(items.length > 3){
+	res.statusCode = 404;
+	res.end();
+}
+
+	// res.statusCode = 200;
+	// res.setHeader('Content-Type', 'application/json')
+	// console.log(friends)
+	// res.end();
+
+
+	
+
+
+	} else if(items[1] === 'messages') {
 		res.setHeader('Content-Type', 'text/html')
 		res.write('<html>');
 		res.write('<body>');
