@@ -23,7 +23,20 @@ res.setHeader('Content-Type', 'application/json')
 	const items = req.url.split('/');
 	// /friends/2 => ['', 'friends', '2']
 
-	if(items[1] === 'friends'){
+if (req.method === 'POST' && items[1] === 'friends') {
+	req.on('data', (data) => {
+	
+		// data is buffer, so convert to toString()
+		const friend = data.toString()
+		console.log('Req:', friend);
+
+		friends.push(JSON.parse(friend))
+
+		res.end();
+	})
+
+
+} else if(req.method === 'GET' && items[1] === 'friends'){
 
 // length is 3 or in params
 
@@ -60,7 +73,7 @@ if(items.length > 3){
 	
 
 
-	} else if(items[1] === 'messages') {
+	} else if(req.method === 'GET' && items[1] === 'messages') {
 		res.setHeader('Content-Type', 'text/html')
 		res.write('<html>');
 		res.write('<body>');
