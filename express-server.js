@@ -1,18 +1,15 @@
 
 const express = require('express')
 
+
+
 const app = express();
 
 const PORT = 3000;
 
-const friends = [{
-	id:1,name: 'Tesla', 
-},{
-	id:2, name: "Einstein"
-},{
-	id:3, name: "Newton"
-}
-]
+// controller
+const { getFriends, getFriend, postFriend } = require('./controls/friends.cont')
+const { getMessages, postMessage } = require('./controls/messages.cont')
 
 // use w/ next
 // logging middleware
@@ -31,75 +28,24 @@ app.use(express.json());
 
 // GET - /
 app.get('/', (req, res)=> {
-
 // .send for html, text, etc
 	res.send('main page')
-
 })
 
 // GET - /friends - return all friends
-app.get('/friends', (req, res)=> {
-
-if(friends.length > 0){
-// .json for data
-	return res.json(friends)
-}
-
-return res.status(404).json({
-		error: "no friend list"
-	})
-
-})
+app.get('/friends', getFriends)
 
 // GET - /friend/:id - a friend
-app.get('/friends/:friendId', (req, res)=> {
-
-// const friendId = req.params.friendId
-	const { friendId } = req.params
-
-	const friendData = friends[Number(friendId) - 1] 
-
-	if(friendData) {
-		// .json for data
-		// dont forget the return
-		return res.json(friendData)
-	} 
-
-	return res.status(404).json({
-		error: "friend not exist"
-	})
-})
-
-// GET - /messages - return all messages
-app.get('/messages', (req, res)=> {
-
-	res.send('messages route')
-
-})
-
+app.get('/friends/:friendId', getFriend)
 
 // POST - /friends
-app.post('/friends', (req, res)=> {
-	const { name } = req.body
+app.post('/friends', postFriend)
 
-	if(!name) {
-		// 400 - a generic/general error
-		return res.status(400).json({ error: 'invalid' })
-	}
-
-	const newFriend = { id: friends.length+1, name }
-
-	friends.push(newFriend);
-
-	return res.json(newFriend)
-
-})
+// GET - /messages - return all messages
+app.get('/messages', getMessages)
 
 // POST - /messages
-app.post('/messages', (req, res)=> {
-	res.send('POST messages route')
-
-})
+app.post('/messages', postMessage)
 
 
 
