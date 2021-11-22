@@ -24,6 +24,8 @@ res.setHeader('Content-Type', 'application/json')
 	// /friends/2 => ['', 'friends', '2']
 
 if (req.method === 'POST' && items[1] === 'friends') {
+
+	// creating stream??
 	req.on('data', (data) => {
 	
 		// data is buffer, so convert to toString()
@@ -32,9 +34,11 @@ if (req.method === 'POST' && items[1] === 'friends') {
 
 		friends.push(JSON.parse(friend))
 
-		res.end();
-	})
+	});
 
+// piping, echo-back??
+// pipe, then you dont need to res.end()
+req.pipe(res);
 
 } else if(req.method === 'GET' && items[1] === 'friends'){
 
