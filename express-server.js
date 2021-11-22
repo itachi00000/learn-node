@@ -26,6 +26,9 @@ app.use((req, res, next) => {
 	console.log(`${req.method}  ${req.url}  ${delta}ms`)
 })
 
+// req.body
+app.use(express.json());
+
 // GET - /
 app.get('/', (req, res)=> {
 
@@ -62,14 +65,9 @@ app.get('/friends/:friendId', (req, res)=> {
 		return res.json(friendData)
 	} 
 
-
 	return res.status(404).json({
 		error: "friend not exist"
 	})
-	
-
-	
-
 })
 
 // GET - /messages - return all messages
@@ -80,17 +78,30 @@ app.get('/messages', (req, res)=> {
 })
 
 
+// POST - /friends
+app.post('/friends', (req, res)=> {
+	const { name } = req.body
+
+	if(!name) {
+		// 400 - a generic/general error
+		return res.status(400).json({ error: 'invalid' })
+	}
+
+	const newFriend = { id: friends.length+1, name }
+
+	friends.push(newFriend);
+
+	return res.json(newFriend)
+
+})
+
 // POST - /messages
 app.post('/messages', (req, res)=> {
 	res.send('POST messages route')
 
 })
 
-// POST - /friends
-app.post('/friends', (req, res)=> {
-	res.send('POST friends route')
 
-})
 
 
 app.listen(PORT, (err)=>{
