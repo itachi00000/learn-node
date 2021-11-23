@@ -1,15 +1,22 @@
+const path = require('path');
+// to get path
+
 const { messages } = require('../models/messages.model')
 
 //  using declarative func vs arrow func
 // for debugging
 function getMessages(req, res) {
 
-if(messages.length > 0){
-// .json for data
-	return res.json(messages)
-}
+const imgPath = path.join(__dirname, '..', 'public', 'pic.jpg')
 
-return res.status(404).send('no messages')
+return res.sendFile(imgPath)
+
+// if(messages.length > 0){
+// // .json for data
+// 	return res.json(messages)
+// }
+
+// return res.status(404).send('no messages')
 }
 
 // get a msg
