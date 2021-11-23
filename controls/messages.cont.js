@@ -1,16 +1,37 @@
+const { messages } = require('../models/messages.model')
 
 //  using declarative func vs arrow func
 // for debugging
 function getMessages(req, res) {
 
-if(friends.length > 0){
+if(messages.length > 0){
 // .json for data
-	return res.json(friends)
+	return res.json(messages)
 }
 
-return res.send('messages')
+return res.status(404).send('no messages')
 }
 
+// get a msg
+function getMessage(req, res) {
+
+// const friendId = req.params.friendId
+	const { msgId } = req.params
+
+// note message is not yet a Model, but a simple array of obj
+	const msgData = messages[Number(msgId) - 1] 
+
+	if(msgData) {
+		// .json for data
+		// dont forget the return
+		return res.json(msgData)
+	} 
+
+	return res.status(404).json({
+		error: "no message"
+	})
+
+}
 
 function postMessage(req, res) {
 
@@ -28,5 +49,6 @@ if(!message) {
 // export
 module.exports = {
 	getMessages,
+	getMessage,
 	postMessage
 }
