@@ -7,16 +7,14 @@ const { messages } = require('../models/messages.model')
 // for debugging
 function getMessages(req, res) {
 
-const imgPath = path.join(__dirname, '..', 'public', 'images', 'pic.jpg')
+// const imgPath = path.join(__dirname, '..', 'public', 'images', 'pic.jpg')
 
-return res.sendFile(imgPath)
+// return res.sendFile(imgPath)
 
-// if(messages.length > 0){
-// // .json for data
-// 	return res.json(messages)
-// }
-
-// return res.status(404).send('no messages')
+return res.render('messages', {
+	title: "Message to friend",
+	friend: "Curie"
+})
 }
 
 // get a msg

@@ -1,20 +1,38 @@
 
 const express = require('express')
+const exphbs = require('express-handlebars'); // alt to hbs
 const path = require('path')
 
+const PORT = 3000;
 
 
 const app = express();
 
-const PORT = 3000;
-
-// controller
-// transfer to individual routes
+// vars, options
+const exphbsOptions = {
+	extname: '.hbs',
+	defaultLayout: "layout.hbs"
+}
 
 
 // router
 const { friendsRouter } = require('./routes/friends.route')
 const { messagesRouter } = require('./routes/messages.route')
+
+
+//  views hbs
+app.engine('.hbs', exphbs(exphbsOptions))
+app.set('view engine', '.hbs')
+app.set('views', path.join(__dirname, 'views'))
+
+
+// render index.hbs
+app.get('/', (req, res)=>{
+	res.render('index', {
+		title: "homepage learn node",
+		caption: "Let's go sit"
+	})
+})
 
 
 // use w/ next
@@ -40,16 +58,6 @@ app.use('/site', express.static(path.join(__dirname, 'public')))
 app.use('/', [ friendsRouter, messagesRouter ])
 
 
-// GET - /
-// app.get('/', (req, res)=> {
-// // .send for html, text, etc
-// 	res.send('main page')
-// })
-
-
-
-
 app.listen(PORT, (err)=>{
-
 	console.log(`listen to ${PORT}`)
 })
