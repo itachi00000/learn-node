@@ -7,7 +7,7 @@ const { messages } = require('../models/messages.model')
 // for debugging
 function getMessages(req, res) {
 
-const imgPath = path.join(__dirname, '..', 'public', 'pic.jpg')
+const imgPath = path.join(__dirname, '..', 'public', 'images', 'pic.jpg')
 
 return res.sendFile(imgPath)
 

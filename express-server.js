@@ -1,5 +1,6 @@
 
 const express = require('express')
+const path = require('path')
 
 
 
@@ -31,15 +32,19 @@ app.use((req, res, next) => {
 // req.body
 app.use(express.json());
 
+// server static site, mount on /site
+// not 'public'
+app.use('/site', express.static(path.join(__dirname, 'public')))
+
 // root router
 app.use('/', [ friendsRouter, messagesRouter ])
 
 
 // GET - /
-app.get('/', (req, res)=> {
-// .send for html, text, etc
-	res.send('main page')
-})
+// app.get('/', (req, res)=> {
+// // .send for html, text, etc
+// 	res.send('main page')
+// })
 
 
 
